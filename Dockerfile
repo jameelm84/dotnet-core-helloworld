@@ -6,6 +6,6 @@ RUN dotnet publish  -o /app
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.0 AS runtime
 WORKDIR /app
-EXPOSE 5000
+EXPOSE 80
 COPY --from=build /app .
 ENTRYPOINT [ "dotnet", "dotnet-core-helloworld.dll" ]
