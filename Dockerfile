@@ -1,9 +1,11 @@
-FROM python:3.6
-MAINTAINER jameel
+FROM  mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
+WORKDIR  /src
+COPY . .
+RUN dotnet restore
+RUN dotnet publish  -o /app
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0 AS runtime
 WORKDIR /app
-COPY . . 
-RUN pip install -r requirements.txt && mkdir /data
 EXPOSE 5000
-VOLUME [ "/data" ]
-ENV app=python
-CMD ["python", "main.py"]
+COPY --from=build /app .
+ENTRYPOINT [ "dotnet", "dotnet-core-helloworld.dll" ]
